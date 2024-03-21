@@ -1,0 +1,148 @@
+<div class="sidebar" [class.sidebar-close]="!openSidebar">
+    <div class="logo-details">
+        <div class="logo"></div>
+    </div>
+    <div >
+        <ul class="nav-links" id="nav-links">
+            <li *ngFor="let item of menuSidebar" #itemEl routerLinkActive="active">
+                <div *ngIf="item.sub_menu.length == 0" class="dropdown-title">
+                    <a >
+                        <i [class]="item.icon"></i>
+                        <span class="link_name">{{item.link_name}}</span>
+                    </a>
+                </div>
+                <div *ngIf="item.sub_menu.length > 0" class="dropdown-title" (click)="showSubmenu(itemEl)">
+                    <a>
+                        <i [class]="item.icon"></i>
+                        <span class="link_name">{{item.link_name}}</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu" [class.blank]="item.sub_menu.length == 0">
+                    <li><a class="link_name">{{item.link_name}}</a></li>
+                    <li *ngFor="let item_sub of item.sub_menu" routerLinkActive="active">
+                        <a >{{item_sub.link_name}}</a>
+                    </li>
+                </ul>
+            </li>
+            <div class="dropdown-title">
+                <li class="custom-li">
+                    <a (click)="logout()">
+                        <i class='bx bx-log-out-circle'></i>
+                        <span class="link_name">Cerrar Sesión</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</div>
+<div class="home-section">
+    <div class="home-header">
+        <div class="hamburger-menu">
+          <!--div *ngIf="account!=null"-->
+          <div >
+            <input type="checkbox" id="checkbox-hamburger-menu" [checked]="openSidebar"
+                (change)="onSidebarToggle($event)" />
+            <label class="label-hamburger-menu" for="checkbox-hamburger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Nav-bar -->
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="navbar-collapse collapse" id="navbarSupportedContent" [ngbCollapse]="isNavbarCollapsed">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="nav-link"  (click)="collapseNavbar()">
+                                    <span class="custom-span"></span>
+                                </a>
+                            </li>
+                            <li 
+                            ngbDropdown class="nav-item dropdown pointer" display="dynamic"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
+                                    id="entity-menu" data-cy="entity">
+                                    <span class="custom-span">Configuraciones</span>
+                                </a>
+                                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+
+                                    <li *ngFor="let item of dataNavBarEntities">
+                                        <a class="dropdown-item"  routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                            <span>{{ item.text }}</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li  ngbDropdown class="nav-item dropdown pointer"
+                                display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
+                                    id="admin-menu" data-cy="adminMenu">
+                                    <span class="custom-span">Administración</span>
+                                </a>
+                                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+
+                                    <li *ngFor="let item of dataNavBarAdmin">
+                                        <a class="dropdown-item"  routerLinkActive="active"
+                                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                            <span>{{ item.text }}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li ngbDropdown class="nav-item dropdown pointer" display="dynamic"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
+                                    id="account-menu" data-cy="accountMenu">
+                                    <span class="custom-span" >Cuenta</span>
+                                </a>
+                                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
+                                    <li >
+                                        <a class="dropdown-item" 
+                                            routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
+                                            <span aprosTranslate="global.menu.account.settings">Ajustes</span>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a class="dropdown-item" 
+                                            routerLinkActive="active" (click)="collapseNavbar()" data-cy="passwordItem">
+                                            <span aprosTranslate="global.menu.account.password">Contraseña</span>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
+                                            <span>Cerrar sesión</span>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a class="dropdown-item"  id="login" data-cy="login">
+                                            <span aprosTranslate="global.menu.account.login">Iniciar sesión</span>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a class="dropdown-item"
+                                            routerLinkActive="active" (click)="collapseNavbar()" data-cy="register">
+                                            <span aprosTranslate="global.menu.account.register">Crear una cuenta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Nav-bar -->
+
+    </div>
+    <ng-content></ng-content>
+</div>
+
